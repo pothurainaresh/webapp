@@ -12,14 +12,11 @@ pipeline {
         '''
       } 
     }
-       stage ('Source Composition Analysis') {
+      stage('Dependency Check') {
       steps {
-         sh 'rm owasp* || true'
-         sh 'wget "https://raw.githubusercontent.com/cehkunal/webapp/master/owasp-dependency-check.sh" '
-         sh 'chmod +x owasp-dependency-check.sh'
-         sh 'bash owasp-dependency-check.sh'
-         sh 'cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml'
-        
+        dependencyCheck additionalArguments: "--cveValidForHours 48 --prettyPrint --scan scan_dependencies --format ALL ${fileExists('owasp-suppression.xml') ? '--suppression owasp-suppression.xml' : ''} --disableAssembly", odcInstallation: 'dependency-check-5.3.2'
+        dependencyCheckPublisher pattern: '', unstableTotalHigh: 1, unstableTotalCritical: 1
+        archiveArtifacts allowEmptyArchive: true, artifacts: '**/dependency-check-report.html', onlyIfSuccessful: false
       }
     }
     stage('Build'){
