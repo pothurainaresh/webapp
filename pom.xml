@@ -16,18 +16,6 @@
     </dependency>
   </dependencies>
   <build>
-    <plugin>
-				<groupId>org.owasp</groupId>
-				<artifactId>dependencey-check-maven</artifactId>
-				<version>5.3.2</version>
-				<executions>
-				<execution>
-				<goals>
-				<goal>check</goal>
-				</goals>
-				</execution>
-				</executions>
-			</plugin>
     <finalName>WebApp</finalName>
   </build>
 </project>
