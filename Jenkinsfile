@@ -1,17 +1,6 @@
 pipeline {
    agent any
-  tools {
-    maven 'maven'
-  }
-  stages{
-    stage ('Initialize'){
-      steps{
-        sh '''
-         echo "PATH = ${PATH}"
-         echo "M2_HOME = ${M2_HOME}"
-        '''
-      } 
-    }
+   stages{
       stage('Dependency Check') {
       steps {
         dependencyCheck additionalArguments: "--cveValidForHours 48 --prettyPrint --scan scan_dependencies --format ALL ${fileExists('owasp-suppression.xml') ? '--suppression owasp-suppression.xml' : ''} --disableAssembly", odcInstallation: 'dependency-check 6.5.3'
